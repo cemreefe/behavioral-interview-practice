@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta name="description" content="Practice your own behavioral questions with a timer." />
+        <title>Behavioral Question Practice</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+    
+        <div id="pageContainer">
+
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <h1>Behavioral question practice</h1>
+                        
+                        <input type="input" name="companyname" id="companyname" placeholder="Company Name"> 
+                        <span title="choose a file containing behavioral questions on each line with the company name replaced with 'JPM'." style="cursor: default;">
+                            ❓
+                        </span>
+                        <input type="file" name="inputfile" id="inputfile">
+                        <button type="button" name="start" id="start">
+                            Start
+                        </button>
+                        <button type="button" name="reset" id="reset">
+                            Reset
+                        </button>
+                        <br>
+                        <br>
+                        <small>click start to use default question set.</small>  
+                        <br>
+                    </td>
+                    <td>
+                           <div id="timer">⏱️</div>      
+                           <div id="stage"></div> 
+                    </td>
+                </tr>
+            </table>
+            
+        </div>
+
+        <div style='height: 100%;'>
+            <div id="centerPiece">
+                <div class="container">
+                    <img id="interviewerimg" src="https://cms-assets.themuse.com/media/lead/_1200x630_crop_center-center_82_none/22337.jpg?mtime=1568818784">
+                    <div id="progressbar"></div>
+                </div>
+                <div id="output"></div>
+            </div>
+        </div>
+        
+
+        <script type="text/javascript">
+            var questions;
+            var sec = 1000;
+            var roundTime;
+            var companyName = 'Amazon';
+
+            questions = [
+                "Introduce yourself",
+                "What attracts you to JPM, and specifically this division?",
+                "What's your cumulative GPA?",
+                "Tell us about a time when you worked with a difficult employee.",
+                "Tell us about a time you worked with a great team. What made working with them great?",
+                "What are you most excited about in financial markets?",
+                "What do you know about the alternative investments industry?",
+                "What attracted you most to this position?",
+                "What unique experience or expertise could you bring to our team?",
+                "What leadership experience or extracurricular activity on your resume is most important to you and why?",
+                "Why are you a good fit for this position?",
+                "Why JPM and why do you think that you will succeed in this role?",
+                "What skills have you gained from your work/internship that will be useful for the job you're applying to?",
+                "Why are you looking for a new role?",
+                "What were your primary responsibilities at your current/previous position?",
+                "What are the areas where you need to improve?",
+                "Tell us about a unique leadership experience of yours?",
+                "What current event interests you?",
+                "How will you use your background and skills to succeed in this role?",
+                "What efforts do you make to stay on top of the markets on a regular basis?",
+                "Where do see yourself after 5 years?",
+                "Please share your previous experience when you led the team.",
+                "Why JPM?",
+                "Why software engineering?",
+                "Name a time you had to overcome a challenge",
+                "Why are you applying for this job?",
+                "what are your background that makes you fit for the job",
+                "Why you want to join in JPM?",
+                "What is your life goal?",
+                "Tell one of your recent work experience and positive-negative experience you got from it.",
+                "Tell something that you have to learn from your recent mistake.",
+                "What is your previous experience in dealing with a difficulty and how did you resolve it?",
+                "Explain a situation where you think you tackled a problem",
+                "Tell me about yourself",
+                "Most behavioral questions were about my experiences working on teams",
+                "Learn about the company beforehand and ask thoughtful questions at the end.",
+                "What are the greatest challenges the financial sector will face in the next 5 years?",
+                "Provide an example of a time when you assessed a problem and understood its root causes. How did you analyze the information?",
+                "What would you do if you were unable to meet a deadline?",
+                "Which is better: meeting a deadline or doing a perfect job?",
+                "What skill sets do you think will help you exceed at this job?",
+                "JPM has a diverse group of people, explain a time how you worked with a diverse group of people and explain your experience",
+                "Explain a time you had a difficult situation and what you did to overcome it",
+                "What's a time you saw something wrong in a team/project/activity you were doing?",
+                "What interests you about current affairs now? Why?",
+                "What are the benefits of raising equity and what are the benefits of raising debt?",
+                "Describe a time when you have been able to demonstrate flexibility?",
+                "Can you talk about your experience of changing your approach quickly to achieve a goal?"
+            ];
+
+            function randInt(lo, hi) {
+                return Date.now() % (hi - lo) + lo;
+            }
+
+            function sleep (time) {
+                return new Promise((resolve) => setTimeout(resolve, time));
+            }
+
+            function updateBar(remainingTime) {
+                var progress = ((1 - remainingTime / roundTime) * 100);
+                document.getElementById('progressbar').style.width = `${progress}%`;
+            }
+
+            function decreaseTimer() {
+                var timerDisp = parseInt(document.getElementById('timer').innerHTML);
+                document.getElementById('timer').innerHTML = timerDisp - 1;
+                updateBar(timerDisp-1);
+                document.getElementById('progressbar').classList.remove('notransition');
+
+                sleep(sec).then(() => {
+                    decreaseTimer()
+                });
+            }
+
+            function newQuestion() {
+                document.getElementById('output')
+                    .textContent=questions[randInt(0, questions.length)]
+                        .replace('JPM', companyName);
+            }
+
+            function setTimer(time) {
+                document.getElementById('progressbar').classList.add('notransition');
+                document.getElementById('timer').innerHTML = time;
+            }
+
+            function startTimer() {
+                decreaseTimer();
+            }
+
+            function setStage(stage) {
+                document.getElementById('stage').innerHTML = stage;
+            }
+
+            function startThinkingRound() {
+                roundTime = 30;
+                setStage('Think');
+                setTimer(30); 
+                sleep(30*sec).then(() => {
+                    startTalkingRound();
+                }); 
+            }
+
+            function startTalkingRound() {
+                roundTime = 91;
+                setStage('Talk');
+                setTimer(90);
+                sleep(90*sec).then(() => {
+                    newQuestion();
+                    startThinkingRound();
+                }); 
+            }
+
+            document.getElementById('companyname')
+                .addEventListener('change', function() {
+                
+                companyName = this.value;
+            });
+
+            document.getElementById('inputfile')
+                .addEventListener('change', function() {
+                
+                var fr=new FileReader();
+                fr.onload=function(){
+                    questions=fr.result.split('\n');
+                }
+                
+                fr.readAsText(this.files[0]);
+
+                document.getElementById('start').disabled = false;
+            });
+
+            document.getElementById('start')
+                .addEventListener('click', function() {
+                
+                newQuestion();
+
+                document.getElementById('interviewerimg')
+                    .style.display = 'inline';
+
+                document.getElementById('start').disabled = true;
+                document.getElementById('inputfile').disabled = true;
+                document.getElementById('companyname').disabled = true;
+                
+                startTimer();
+                startThinkingRound();               
+            });
+
+            document.getElementById('reset')
+                .addEventListener('click', function() {
+                
+                location.reload();               
+            });
+
+            
+
+        </script>
+
+        <script>
+        </script>
+
+    </body>
+</html>

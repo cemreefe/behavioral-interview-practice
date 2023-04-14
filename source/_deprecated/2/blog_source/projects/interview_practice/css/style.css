@@ -1,0 +1,66 @@
+body {
+    color:rgb(26, 25, 27);
+    background-color: antiquewhite;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#pageContainer {
+    margin: auto;
+    background-color:burlywood;
+    max-width: 800px;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+#output {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+#interviewerimg {
+    display: none;
+    max-width: 100%;
+    margin: auto;
+}
+
+#centerPiece {
+    /* position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translateX(-50%) translateY(-50%); */
+    margin-top: 3em;
+    text-align: center;
+    align-items: center;
+}
+
+#timer {
+    font-size: 3em;
+    font-weight: bold;
+    margin-right: 10px;
+    text-align: center;
+}
+
+#stage {
+    text-align: center;
+}
+
+#progressbar {
+    width: 0%;
+    height: 1em;
+    background-color: green;
+    transition: width 1s;
+    max-width: 400px;
+}
+
+.notransition {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    -ms-transition: none !important;
+    transition: none !important;
+  }
+
+  .container {
+      max-width: 400px;
+      margin: auto;
+  }
